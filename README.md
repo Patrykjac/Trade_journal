@@ -56,6 +56,9 @@ dotnet run --project src/TradeJournal.Web
 | `.gitignore` | Claude | doradztwo (polecenie `dotnet new gitignore`), plik wygenerowany przez dotnet |
 | `.gitattributes` | Claude | doradztwo (propozycja ustawienia), plik napisany według podpowiedzi |
 | solucja, projekty Core/Web/Tests | Claude | doradztwo (podział na projekty), pliki wygenerowane szablonami `dotnet new` |
-| `InvalidDayEntryException.cs` | Claude | wygenerowany, literówkę w deklaracji klasy poprawiono ręcznie |
+| `InvalidDayEntryException.cs` | Claude | wygenerowany,  |
 | `DayEntry.cs` | Claude | wygenerowany; zweryfikowany 8 testami |
-| `DayEntryTests.cs` | Claude | wygenerowany, literówki po wklejeniu poprawione ręcznie |
+| `DayEntryTests.cs` | Claude | wygenerowany,  |
+|`InInvalidDayEntryException.cs`| Claude | wygenerowany|
+|`InvalidAccountException.cs`| Claude | wygenerowany, błąd składni poprawiono ręcznie|
+|`DayEntryTets.cs`| Claude | wygenerowany|
