@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pobierz kod
+        uses: actions/checkout@v4
+
+      - name: Zainstaluj .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Przywróć zależności
+        run: dotnet restore TradeJournal.slnx
+
+      - name: Zbuduj
+        run: dotnet build TradeJournal.slnx --no-restore --configuration Release
+
+      - name: Uruchom testy
+        run: dotnet test TradeJournal.slnx --no-build --configuration Release
