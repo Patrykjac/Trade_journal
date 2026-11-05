@@ -41,6 +41,43 @@ public class Account
     public decimal AverageWinningDay => AveragePnl(e => e.IsWinning);
     public decimal AverageLosingDay => AveragePnl(e => e.IsLosing);
 
+    public decimal GrossProfit => _entries.Where(e => e.IsWinning).Sum(e => e.Pnl);
+    public decimal GrossLoss => _entries.Where(e => e.IsLosing).Sum(e => -e.Pnl);
+    public decimal? ProfitFactor =>
+        GrossLoss == 0 ? null : GrossProfit/GrossLoss;
+    public DayEntry? BestDay => _entries.MaxBy(e => e.Pnl);
+    public DayEntry? WorstDay => _entries.MinBy(e => e.Pnl);
+
+    public IReadOnlyList<EquityPoint> GetEquityCurve()
+    {
+        var balance = StartingBalance;
+        var curve = new List<EquityPoint>();
+
+        foreach(var entry in _entries.OrderBy(e => e.Date))
+        {
+            balance += entry.Pnl;
+            curve.Add(new EquityPoint(entry.Date, balance));
+        }
+
+        return curve;
+    }
+
+    public decimal MaxDrawdown
+    {
+        get
+        {
+            var peak = StartingBalance;
+            var maxDrawdown = 0m;
+
+            foreach (var point in GetEquityCurve())
+            {
+                peak = Math.Max(peak, point.Balance);
+                maxDrawdown = Math.Max(maxDrawdown, peak - point.Balance);
+            }
+
+            return maxDrawdown;
+        }
+    }
 
     private decimal AveragePnl(Func<DayEntry, bool> filter)
     {
