@@ -47,6 +47,14 @@ Testy uruchamiają się też automatycznie na GitHubie przy każdym pushu do `ma
 dotnet run --project src/TradeJournal.Web
 ```
 
+## Wydania
+
+Gotowe paczki są w zakładce [Releases](https://github.com/Patrykjac/trade_journal/releases). Każde wydanie powstaje automatycznie po wypchnięciu tagu `vX.Y.Z` (GitHub Actions: testy, publikacja, ZIP z numerem wersji).
+
+Platforma: Windows x64, paczka samodzielna (nie wymaga instalacji .NET).
+
+Uruchomienie z paczki: rozpakuj ZIP, uruchom `TradeJournal.Web.exe` i otwórz adres wyświetlony w terminalu (zwykle `http://localhost:5000`).
+
 ## Diagram klas
 
 ```mermaid
