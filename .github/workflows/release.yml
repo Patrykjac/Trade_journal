@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]+'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Pobierz kod
+        uses: actions/checkout@v4
+
+      - name: Zainstaluj .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Uruchom testy
+        run: dotnet test TradeJournal.slnx --configuration Release
+
+      - name: Opublikuj aplikację dla Windows x64
+        run: >
+          dotnet publish src/TradeJournal.Web
+          --configuration Release
+          --runtime win-x64
+          --self-contained true
+          --output publish
+
+      - name: Spakuj do ZIP
+        run: |
+          cd publish
+          zip -r "../TradeJournal-${GITHUB_REF_NAME}-win-x64.zip" .
+
+      - name: Utwórz wydanie na GitHubie
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: >
+          gh release create "$GITHUB_REF_NAME"
+          "TradeJournal-${GITHUB_REF_NAME}-win-x64.zip"
+          --title "$GITHUB_REF_NAME"
+          --generate-notes
