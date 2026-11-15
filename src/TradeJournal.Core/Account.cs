@@ -6,17 +6,28 @@ public class Account
 {
     private readonly List<DayEntry> _entries = new();
 
+    public Guid Id { get; }
     public string Name { get; }
     public decimal StartingBalance { get; }
     public IReadOnlyList<DayEntry> Entries => _entries;
 
-    public Account(string name, decimal startingBalance)
+     public Account(string name, decimal startingBalance)
+        : this(Guid.NewGuid(), name, startingBalance)
     {
+    }
+
+    public Account(Guid id, string name, decimal startingBalance)
+    {
+        if (id == Guid.Empty)
+            throw new InvalidAccountException("Identyfikator konta nie może być pusty.");
+
         if (string.IsNullOrWhiteSpace(name))
             throw new InvalidAccountException("Nazwa konta nie może być pusta.");
-        
+
         if (startingBalance <= 0)
-            throw new InvalidAccountException("Saldo początkowe musi być większe od 0.");
+            throw new InvalidAccountException("Saldo początkowe musi być większe od zera.");
+
+        Id = id;
         Name = name.Trim();
         StartingBalance = startingBalance;
     }
