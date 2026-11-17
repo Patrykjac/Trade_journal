@@ -105,4 +105,61 @@ public abstract class AccountRepositoryContractTests
 
         Assert.Single(Repository.GetAll());
     }
+        [Fact]
+    public void GetById_ReturnsAccountWithNameAndStartingBalance()
+    {
+        var account = new Account("Konto A", 25000m);
+        Repository.Add(account);
+
+        var loaded = Repository.GetById(account.Id)!;
+
+        Assert.Equal("Konto A", loaded.Name);
+        Assert.Equal(25000m, loaded.StartingBalance);
+    }
+
+    [Fact]
+    public void Add_KeepsEntriesWithDateAmountAndNote()
+    {
+        var account = new Account("Konto A", 1000m);
+        var entry = new DayEntry(new DateOnly(2025, 1, 10), 123.45m);
+        entry.SetNote("dobry dzień");
+        account.AddEntry(entry);
+        account.AddEntry(new DayEntry(new DateOnly(2025, 1, 11), -50m));
+
+        Repository.Add(account);
+
+        var loaded = Repository.GetById(account.Id)!;
+        var first = loaded.Entries.OrderBy(e => e.Date).First();
+        Assert.Equal(2, loaded.Entries.Count);
+        Assert.Equal(new DateOnly(2025, 1, 10), first.Date);
+        Assert.Equal(123.45m, first.Pnl);
+        Assert.Equal("dobry dzień", first.Note);
+    }
+
+    [Fact]
+    public void Update_PersistsEntriesAddedAfterAdd()
+    {
+        var account = new Account("Konto A", 1000m);
+        Repository.Add(account);
+        account.AddEntry(new DayEntry(new DateOnly(2025, 1, 10), 100m));
+
+        Repository.Update(account);
+
+        var loaded = Repository.GetById(account.Id)!;
+        Assert.Single(loaded.Entries);
+    }
+
+    [Fact]
+    public void Update_ThrowsForUnknownAccount()
+    {
+        var account = new Account("Konto A", 1000m);
+
+        Assert.Throws<AccountNotFoundException>(() => Repository.Update(account));
+    }
+
+    [Fact]
+    public void Update_ThrowsForNull()
+    {
+        Assert.Throws<ArgumentNullException>(() => Repository.Update(null!));
+    }
 }

@@ -4,6 +4,8 @@ public interface IAccountRepository
 {
     void Add(Account account);
 
+    void Update(Account account);
+
     Account? GetById(Guid id);
 
     IReadOnlyList<Account> GetAll();

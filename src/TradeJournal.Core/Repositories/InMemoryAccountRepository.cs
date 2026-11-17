@@ -18,6 +18,15 @@ public class InMemoryAccountRepository : IAccountRepository
 
         _accounts.Add(account.Id, account);
     }
+        public void Update(Account account)
+    {
+        ArgumentNullException.ThrowIfNull(account);
+
+        if (!_accounts.ContainsKey(account.Id))
+            throw new AccountNotFoundException(account.Id);
+
+        _accounts[account.Id] = account;
+    }
 
     public Account? GetById(Guid id) =>
         _accounts.TryGetValue(id, out var account) ? account : null;
