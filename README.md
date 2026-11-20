@@ -87,9 +87,9 @@ classDiagram
     Exception <|-- InvalidDayEntryException
     Exception <|-- InvalidAccountException
     Exception <|-- DuplicateEntryException
-    DayEntry ..> InvalidDayEntryException : rzuca
-    Account ..> InvalidAccountException : rzuca
-    Account ..> DuplicateEntryException : rzuca
+    DayEntry ..> InvalidDayEntryException : throws
+    Account ..> InvalidAccountException : throws
+    Account ..> DuplicateEntryException : throws
 ```
 
 ## Koncepcje obiektowe
@@ -117,4 +117,3 @@ classDiagram
 | `.github/workflows/ci.yml` | Claude | wygenerowany, użyty bez zmian; zweryfikowany przebiegiem w GitHub Actions |
 | `README.md` | Claude | szkielet i tabele przygotowane z pomocą LLM, wklejone i dopasowane ręcznie |
 
-Uwaga: commity `a23e4bc` i `4c9c76b` zawierały pliki z błędami składni, poprawione w kolejnych commitach (`1e3b018` i `c6f217b`). Stopki tych commitów nie wspominają o ręcznej poprawce, dlatego opisano ją w rejestrze powyżej.
