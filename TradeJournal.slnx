@@ -1,6 +1,7 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="src/TradeJournal.Core/TradeJournal.Core.csproj" />
+    <Project Path="src/TradeJournal.Data/TradeJournal.Data.csproj" />
     <Project Path="src/TradeJournal.Web/TradeJournal.Web.csproj" />
   </Folder>
   <Folder Name="/tests/">

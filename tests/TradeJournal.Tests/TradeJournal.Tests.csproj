@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\TradeJournal.Core\TradeJournal.Core.csproj" />
+    <ProjectReference Include="..\..\src\TradeJournal.Data\TradeJournal.Data.csproj" />
   </ItemGroup>
 
 </Project>
