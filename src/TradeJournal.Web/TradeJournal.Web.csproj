@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TradeJournal.Core\TradeJournal.Core.csproj" />
+    <ProjectReference Include="..\TradeJournal.Data\TradeJournal.Data.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

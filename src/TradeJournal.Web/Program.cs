@@ -1,7 +1,21 @@
+using TradeJournal.Core.Repositories;
+using TradeJournal.Data;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
+
+builder.Services.AddSingleton<IAccountRepository>(_ =>
+{
+    var dataDirectory = Path.Combine(
+        Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+        "TradeJournal");
+    Directory.CreateDirectory(dataDirectory);
+
+    var databasePath = Path.Combine(dataDirectory, "tradejournal.db");
+    return new SqliteAccountRepository($"Data Source={databasePath}");
+});
 
 var app = builder.Build();
 
