@@ -1,0 +1,57 @@
+@page
+@model TradeJournal.Web.Pages.Accounts.IndexModel
+@{
+    ViewData["Title"] = "Konta";
+}
+
+<h1>Konta</h1>
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+@if (Model.Accounts.Count == 0)
+{
+    <p>Nie masz jeszcze żadnych kont. Dodaj pierwsze poniżej.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nazwa</th>
+                <th class="text-end">Saldo początkowe</th>
+                <th class="text-end">Saldo aktualne</th>
+                <th class="text-end">Dni</th>
+                <th class="text-end">Win rate</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var account in Model.Accounts)
+            {
+                <tr>
+                    <td>@account.Name</td>
+                    <td class="text-end">@account.StartingBalance.ToString("N2")</td>
+                    <td class="text-end">@account.CurrentBalance.ToString("N2")</td>
+                    <td class="text-end">@account.TradingDays</td>
+                    <td class="text-end">@account.WinRate.ToString("N1")%</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<h2>Dodaj konto</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label class="form-label" asp-for="Name">Nazwa</label>
+        <input class="form-control" asp-for="Name" />
+    </div>
+    <div class="mb-3">
+        <label class="form-label" asp-for="StartingBalanceText">Saldo początkowe</label>
+        <input class="form-control" asp-for="StartingBalanceText" inputmode="decimal" />
+    </div>
+    <button type="submit" class="btn btn-primary">Dodaj</button>
+</form>
