@@ -1,0 +1,73 @@
+@page "{id:guid}"
+@model TradeJournal.Web.Pages.Accounts.DetailsModel
+@{
+    var account = Model.Account;
+    ViewData["Title"] = account.Name;
+
+    string PnlClass(decimal value) =>
+        value > 0 ? "text-success" : value < 0 ? "text-danger" : "";
+}
+
+<p><a asp-page="/Accounts/Index">&larr; Wszystkie konta</a></p>
+
+<h1>@account.Name</h1>
+
+<p>
+    Saldo początkowe: @account.StartingBalance.ToString("N2"),
+    saldo aktualne: <strong>@account.CurrentBalance.ToString("N2")</strong>,
+    liczba dni: @account.TradingDays
+</p>
+
+@if (Model.Error is not null)
+{
+    <div class="alert alert-danger">@Model.Error</div>
+}
+
+<h2>Dodaj wpis dnia</h2>
+
+<form method="post">
+    <div class="row g-3 mb-3">
+        <div class="col-md-3">
+            <label class="form-label" asp-for="DateText">Data</label>
+            <input class="form-control" asp-for="DateText" type="date" />
+        </div>
+        <div class="col-md-3">
+            <label class="form-label" asp-for="PnlText">PnL</label>
+            <input class="form-control" asp-for="PnlText" inputmode="decimal" placeholder="np. 250 lub -120,50" />
+        </div>
+        <div class="col-md-6">
+            <label class="form-label" asp-for="Note">Notatka</label>
+            <textarea class="form-control" asp-for="Note" rows="2" maxlength="1000"></textarea>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Dodaj wpis</button>
+</form>
+
+<h2 class="mt-4">Wpisy dni</h2>
+
+@if (Model.Entries.Count == 0)
+{
+    <p>Brak wpisów. Dodaj pierwszy powyżej.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Data</th>
+                <th class="text-end">PnL</th>
+                <th>Notatka</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var entry in Model.Entries)
+            {
+                <tr>
+                    <td>@entry.Date.ToString("yyyy-MM-dd")</td>
+                    <td class="text-end @PnlClass(entry.Pnl)">@entry.Pnl.ToString("N2")</td>
+                    <td>@entry.Note</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

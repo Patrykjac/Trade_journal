@@ -31,7 +31,7 @@ else
             @foreach (var account in Model.Accounts)
             {
                 <tr>
-                    <td>@account.Name</td>
+                    <td><a asp-page="/Accounts/Details" asp-route-id="@account.Id">@account.Name</a></td>
                     <td class="text-end">@account.StartingBalance.ToString("N2")</td>
                     <td class="text-end">@account.CurrentBalance.ToString("N2")</td>
                     <td class="text-end">@account.TradingDays</td>
